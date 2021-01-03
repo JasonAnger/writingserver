@@ -1,0 +1,36 @@
+* {
+    font-family: Roboto, sans-serif;
+    font-weight: 300;
+}
+
+.btn {
+    font-weight: 700;
+}
+
+h2, h3 {
+    font-weight: 700;
+}
+
+.formImage {
+    height: 200px;
+    display: flex;
+    width: 200px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: rgb(206, 206, 206);
+    border: rgb(146, 146, 146) 1px solid;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-list {
+    list-style: none; 
+    padding: 0;
+}
+
+
+.post-list h4,p {
+    margin: 0;
+    padding: 0;
+}
