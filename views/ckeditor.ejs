@@ -1,0 +1,26 @@
+<script>
+    CKEDITOR.replace('content', {
+        extraPlugins: ['filebrowser','youtube'],
+        filebrowserBrowseUrl: '/upload', //upload location
+        filebrowserUploadMethod: 'form',
+        filebrowserUploadUrl: '/upload' //route
+    });
+</script>
+<script>
+    function readURL(input) {
+        console.log(input)
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("previewThumbnail").src = e.target.result
+            }
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+    }
+    function renderTags() {
+        document.getElementById("tag-list").innerHTML = ""
+        document.getElementById("tags").value.trim().split(" ").forEach(element => {
+            document.getElementById("tag-list").innerHTML += `<div style="color: white; background-color: black; border-radius: 3px; padding: 2px 5px; font-size: 12px; margin-right: 3px;">${element}</div>`
+        });
+    }
+</script>
