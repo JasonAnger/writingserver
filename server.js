@@ -6,8 +6,24 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const md5 = require('md5')
+const session = require('express-session');
+const cookieParser = require('cookie-parser')
  
 const Post = require('./models/Post.model')
+
+const auth = (req, res, next) => {
+    try {
+        const token = req.cookies.token
+        if(token==md5("thanhnguyen"+"123123")) {
+            next()
+        } else {
+            res.redirect('/login')
+        }
+    } catch {
+        res.redirect('/login')
+    }
+}
 
 require('dotenv').config()
 mongoose.connect(process.env.MONGO, {useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
@@ -30,29 +46,52 @@ const upload = multer({ storage: storage })
 app.set("view engine", "ejs")
 app.set("views", "./views")
 
+app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(express.static("./public"))
+app.use(session({
+    secret: "secret",
+	resave: true,
+    saveUninitialized: true,
+    cookie: {}
+}))
 
-app.get("/", (req, res) => {
+app.get("/", auth , (req, res) => {
     res.render("index")
 })
-app.get("/posts", async (req, res) => {
+app.get("/login", (req, res) => {
+    res.render("login")
+})
+app.post("/login", (req, res) => {
+    if(req.body.username=="thanhnguyen" && req.body.password=="123123") {
+        let options = {
+            maxAge: 1000 * 60 * 60 * 24 * 7, // would expire after 15 minutes
+        }
+        res.cookie('token', md5(req.body.username+req.body.password), options)
+        res.redirect("/")
+    }
+})
+app.post("/logout", (req, res) => {
+    res.clearCookie("token")
+    res.redirect("/login")
+})
+app.get("/posts", auth , async (req, res) => {
     const posts = await Post.find()
     res.render("posts", {posts: posts})
 })
-app.get("/vietbai", (req, res) => {
+app.get("/vietbai", auth , (req, res) => {
     res.render("vietbai")
 })
-app.get("/edit/:id", async (req, res) => {
+app.get("/edit/:id", auth , async (req, res) => {
     const editPost = await Post.findOne({_id: req.params.id})
     res.render("suabai", {post: editPost})
 })
-app.get("/thanhcong", (req, res) => {
+app.get("/thanhcong", auth , (req, res) => {
     res.render("thanhcong")
 })
-app.get("/thatbai", (req, res) => {
+app.get("/thatbai", auth , (req, res) => {
     res.render("thatbai")
 })
 app.post("/upload", multipartMiddleware, (req, res) => {

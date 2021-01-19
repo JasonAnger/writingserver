@@ -17,33 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">TNCBlog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="/">Trang chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/posts">Bài viết</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/vietbai">Viết bài</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://thanhnguyencrypto.com/">Về chúng tôi</a>
-                </li>
-            </ul>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
+    <%- include('navbar')%>
     <form action="/api/edit/<%= post._id %>" method="POST" style="margin-top: 80px;" enctype="multipart/form-data" class="container">
         <h1 style="font-weight: 900; color: rgb(40, 117, 218);">Tạo bài viết mới</h1>
         <div class="row" style="margin-bottom: 25px;">
@@ -64,7 +38,7 @@
             </div>
         </div>
         <label for="content">Nội dung</label>
-        <textarea name="content" id="content" rows="10" cols="80"><%= post.content %></textarea>
+        <textarea name="content" id="content" rows="90" cols="80"><%= post.content %></textarea>
         <label for="tags">Thẻ bài viết</label>
         <input name="tags" id="tags" style="width: 100%; padding: 5px 10px;" onchange="renderTags()" value="<%= post.tags.join(" ") %>"></input>
         <div style="display: flex; margin: 3px 0;" id="tag-list"></div>
