@@ -20,7 +20,7 @@ const auth = (req, res, next) => {
         } else {
             res.redirect('/login')
         }
-    } catch {
+    } catch(e) {
         res.redirect('/login')
     }
 }
