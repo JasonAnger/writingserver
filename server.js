@@ -9,7 +9,10 @@ const cors = require('cors')
 const md5 = require('md5')
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
- 
+const http = require('http')
+const https = require('https')
+const path = require('path')
+
 const Post = require('./models/Post.model')
 
 const auth = (req, res, next) => {
@@ -160,9 +163,27 @@ app.delete("/api/delete/:id", upload.single('thumbnail'), (req,res) => {
     })                
 })
 
-app.listen(PORT, () => {
-    console.log("Server is running on port "+PORT)
-})
+// app.listen(PORT, () => {
+//     console.log("Server is running on port "+PORT)
+// })
+
+
+const httpServer = http.createServer((req, res) => {
+    res.statusCode = 301;
+    res.setHeader('Location', `https://${hostname}${req.url}`);
+    res.end(); // make sure to call send() or end() to send the response
+ });
+httpServer.listen(80, () => console.log(`Server is running on Port ${80}.`))
+
+const sslServer = https.createServer(
+    {
+        // key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')), 
+        // ca: fs.readFileSync(path.join(__dirname, 'cert', 'tridancoin_com.ca-bundle')),
+        // cert: fs.readFileSync(path.join(__dirname, 'cert', 'tridancoin_com.crt'))
+    }, app
+)
+
+sslServer.listen(443, () => console.log(`Secure Server is running on Port ${443}.`))
 
 function replaceAllBackslash(item) {
     while(item.indexOf("\\")>=0) {
