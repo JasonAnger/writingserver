@@ -174,8 +174,8 @@ httpServer.listen(80, () => console.log(`Server is running on Port ${80}.`))
 const sslServer = https.createServer(
     {
         key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')), 
-        // ca: fs.readFileSync(path.join(__dirname, 'cert', 'tridancoin_com.ca-bundle')),
-        cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+        ca: fs.readFileSync(path.join(__dirname, 'cert', 'tncwriting_work.ca-bundle')),
+        cert: fs.readFileSync(path.join(__dirname, 'cert', 'tncwriting_work.crt'))
     }, app
 )
 
